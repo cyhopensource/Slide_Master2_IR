@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A presentation for paper Boost.SIMD">
+		<meta name="author" content="Yiheng CAO">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Boost.SIMD </h2>
+					<p>
+						Generic Programming for portable SIMDization
+					</p>
+					<p>
+						<small>Created by <a href="https://github.com/cyhopensource">Yiheng CAO</a></small> 
+					</p>
+					<p>
+						<small><a> 28/01/2022 </a></small>	
+					</p>
+					<p>
+						<small><a>Univeristé Paris Saclay SETI M2 </a></small>
+					</p>
+				</section>
+
+				<section data-markdown>
+					## Abstract
+					----
+					+ Simplification de programmation de SIMD
+					+ Extension de C++ (lib Boost::SIMD)
+					+ Implémentation dans des projets 
+				</section>
+
+				<section data-markdown>
+					## Just les bases
+					----
+					1. Architecture de SIMD de CPU Extension
+						- Intel: SSE, SSE2, AVX
+						- ARM: NEON, NEON2
+					2. Générique et template métaprogrammation de C++
+					3. DSL(Domain Specific Language) et AST-Tree 
+				</section>
+
+				<section>
+					<section>
+						<h2>Pour quoi il veut faire cet extension et implémentation de C++ ?</h2>
+						<a href="#" class="navigate-down">
+							<img class="r-frame" style="background: rgba(255,255,255,0.1);" width="178" height="238" data-src="https://static.slid.es/reveal/arrow.png" alt="Down arrow">
+						</a>
+					</section>
+
+					<section>
+						<h2>1. Plusieur types de SIMD maintenant</h2>
+						<img class="r-frame" style="background: rgba(255,255,255,0.1);" width="188" height="238" data-src="/home/yiheng/桌面/revealjs/image/intel.png" alt="Intel">
+						<img class="r-frame" style="background: rgba(255,255,255,0.1); margin-left: 30px;" width="188" height="238" data-src="/home/yiheng/桌面/revealjs/image/ARM-Logo.jpg" alt="ARM">
+						<img class="r-frame" style="background: rgba(255,255,255,0.1); margin-left: 30px;" width="188" height="238" data-src="/home/yiheng/桌面/revealjs/image/Symbole-IBM.jpg" alt="IBM">
+						<img class="r-frame" style="background: rgba(255,255,255,0.1); margin-left: 30px;" width="188" height="238" data-src="/home/yiheng/桌面/revealjs/image/amd-logo.jpg" alt="AMD">
+						<p data-markdown>
+							 + Problème: Reécrire tous les codes SIMD
+							 + Solutions: Automate et Multiplateforme
+						</p>
+						
+					</section>
+
+					<section>
+						<h2>2. Quelques outils actuels</h2>
+						<p data-markdown>
+							----
+							+ Autovectorisation de compilation
+							+ Directive de code (#pragma)
+							+ Libraires de SIDM spécifique
+								+ Intel:MKL et AMD:ACML
+							----
+						</p>
+						<p>
+							<span style="display: inline-block;" class="fragment fade-up">
+								Ils ne sont pas assez efficace pour Multiplateforme ou SIMD 
+							</span>
+						</p>
+
+					</section>
+
+					<section>
+						<p data-markdown>
+							<!-- 放置文章的结构图 -->
+							C'est Parti! 
+						</p>
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<!-- 第一部分扩展C++ -->
+						<h2>Extension-1</h2>
+						<p data-markdown>
+							-----
+							+ Abstraction de SIMD dans C++
+							
+						</p>
+						<img src="/home/yiheng/桌面/revealjs/image/avx.png" width="50%">
+						<p data-markdown>
+							-----
+							+ Concepter une strcuture de données pour présenter
+							+ Mémoire et les valeurs, adapdation au tuple et range
+							+ Compléter les interface de C++ (math, opérateur etc)
+						</p>
+					</section>
+					<section>
+						<h2 data-id="code-title">Code de base</h2>
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1,2|5|7-10|12,13|15,16|21,22"><script type="text/template">
+							#include <boost/simd/pack.hpp>
+							using namespace boost::simd;
+							int main()
+							{
+								std::array<T,N>
+
+								//Build pack from memory and values
+								float s, tx[]={1, 2, 3, 4};
+								pack<float> x(tx, tx+4);
+								pack<float> a(1. 37), b(1, −2, 3, −4), r;
+
+								// Predicates handling // boolean value
+								pack<logical<float>> y(tx, tx+4);
+								
+								// Operator and functioncalls
+								r += min(a∗x+b, b);
+
+								// Array interface
+								r[0] = 1.f + r[0];
+
+								// Range interface : using std::accumulate
+								s = accumulate(r.begin(), r.end(), 0.f);
+								return 0;
+							}
+						</script></code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Extension-2</h2>
+						<p data-markdown>
+							----
+							+ Intégration dans STL de C++
+							
+						</p>
+						<img src="/home/yiheng/桌面/revealjs/image/stl.png" width="600px" height="150px">
+						<p data-markdown>
+							----
+							+ Pour la base de STL, il faut réaliser **Container** et **Iterator** afin d'interfacer les **algorithmes** de STL
+							+ Faciliter les programmations et implémentations
+						</p>
+					</section>
+
+					<section>
+						<p data-markdown>
+							### Plus concrètement
+							------
+							+ Pour le **Container**
+								+ L'adaptateur de mémoire (données alignées)
+							+ Pour le **Iterator**
+								+ Le Sliding Window Iterator (Filtrage algorithme)
+								+ Le Interleaved Iterator (Données hétérogènes)
+						</p>
+						<img src="/home/yiheng/桌面/revealjs/image/Interleaved.png" width="600px" height="200px" alt="Interleaved">
+					</section>
+
+					<section>
+						<h2 data-id="code-title">Code d'exemple de STL</h2>
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-6|8-16|17-23"><script type="text/template">
+							vector <int, allocator <int>> v(128), r(128);
+							transform(simd::begin(v.begin())
+							, simd::end(v.end())
+							, simd::begin(r.begin())
+							, [](pack<int>&p) {return −p;}
+							);
+							
+							struct average{
+
+								template<class T> typename T::value_type
+								operator() (T const& t) const
+								{
+									typename T::value_type d(1./3);
+									return (t[0]+t[1]+t[2])∗d ;
+								}
+							};
+
+							vector <float> in, out;
+							transform(shifted_iterator<3>(in.begin())
+							, shifted_iterator<3>(in.end())
+							, begin(out.begin())
+							, average()
+							);
+
+						</script></code></pre>
+					</section>
+
+				</section>
+
+				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
+					<section>
+						<h2>Implémentation-1</h2>
+						<p data-markdown>
+							----
+							+ Sur la base de AST-Tree et EDSL
+							+ Utiliser le libraire Boost :: Proto
+							----
+						</p>
+						<span style="display: inline-block;" class="fragment fade-up">
+							<p data-markdown>
+								### C'est quoi le Proto
+							</p>
+						</span>
+						<span style="display: inline-block;" class="fragment fade-up">
+							<p data-markdown>
+								+ Un framework pour concevoir EDSL en C++
+								+ It contients plusieurs outils pour concevoir => 
+								+ type-checking, transformer et exécuter expression de templates
+							</p>
+						</span>
+					</section>
+
+					<section>
+						<p data-markdown>
+							+ C'est un EDSL très simple pour réaliser une fonction
+						</p>
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="2"><script type="text/template">
+							// This builds an expression template
+							(Unit2-Unit1)/Composant * 100;
+						</script></code></pre>
+						<p data-markdown>
+							----
+							+ On peut les interprèter en utilisant **Boost :: Proto**
+
+						</p>
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-4|6-7"><script type="text/template">
+
+							AST_context ctx;
+							ctx.args.push_back(pack_U1); // the value of Unit1
+							ctx.args.push_back(pack_U2); // the value of Unit2
+							ctx.args.push_back(pack_C3); // the value of Composant
+
+							// Create an arithmetic expression and immediately evaluate it
+							pack_res = proto::eval( (Unit2-Unit1)/Composant * 100;, ctx );
+
+							std::cout << pack_res << std::endl;
+						</script></code></pre>
+					</section>
+
+				</section>
+
+				<section data-background="#4d7e65">
+					<section>
+						<h2>Implémentation-2</h2>
+						<p data-markdown>
+							----
+							+ Sur la base de Générique Overloading
+								+ SFINAE(Substitution failure is not an error)
+								+ Tag Dispatching(Utiliser l'Hiérarchie Class)
+							----
+						</p>
+						<span style="display: inline-block;" class="fragment fade-down">
+							<p data-markdown>
+								Il propose Tag Dispatching (SSE, SSE2, AVX, NEON, NEON2 et Altivec etc)
+							</p>
+						</span>
+						
+					</section>
+
+					<section>
+						<h2 data-id="code-title">Compilation en Tag</h2>
+						<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="1-5|7-10"><script type="text/template">
+							mkdir build
+							cd build
+							cmake .. -Dsimd=SIMD_EXT
+							make
+							make install
+
+							// jusqu'à maintenant la version nsimd
+							SIMD_EXT = SSE2, SSE42, AVX, AVX2, AVX512\_KNL, AVX512\_SKYLAKE, NEON128, 
+							AARCH64, SVE, SVE128, SVE256, SVE512,
+							SVE1024, SVE2048, VMX, VSX, CUDA, ROCM.
+
+						</script></code></pre>
+					</section>
+
+				</section>
+
+				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+					<section>
+						<h2>BenchMarks</h2>
+						<p data-markdown>
+							----
+							+ AXPY Kernel Calcule
+							+ Sigma Delta Motion Détection
+							+ RGB2YUV Couleur Transformation
+							----
+							Evaluer les performance en **GFlop/s** ou CPP
+						</p>
+					</section>
+
+					<section>
+						<h2>Les comparaision</h2>
+						<p data-markdown>
+							----
+							+ AXPY Kernel Calcule
+								+ GFlops: Boost::SIMD = gcc < icc
+								+ Grain fin + déroulage + Spécifique
+						
+						
+							+ Sigma Delta Motion Détection
+								+ CPP: Vitesse x 8 
+								+ Un calcule plus général
+
+							+ RGB2YUV Couleur Détection
+								+ CPP: > Vitesse x 4
+						</p>
+					</section>
+
+				</section>
+
+				<section data-transition="slide" data-background-transition="zoom">
+					<h2>Conclusion</h2>
+					<p data-markdown>
+						----
+						+ Bon:
+							+ Simplifier la programmation SIMD
+							+ Accélérer les applications générales
+							+ Support de DSL domaine spécifique
+						----
+
+						+ Manque:
+							+ Support de Grain fin (déroulage)
+							+ Types de données (Complexe)
+							+ Amélioration d'architecture spécifique
+					</p>
+				</section>
+
+				<section data-background-video="/home/yiheng/桌面/revealjs/image/video_3.mp4" data-background-color="#000000">
+					<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 10px; margin-top:250px;">
+						<a> https://github.com/agenium-scale/nsimd </a>
+						<p data-markdown>
+							## Merci
+						</p>
+					</div>
+				</section>
+				
+
+				<!-- 以下是例程部分. -->
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			});
+
+		</script>
+
+	</body>
+</html>
