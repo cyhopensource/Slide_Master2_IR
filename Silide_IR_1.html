@@ -40,20 +40,12 @@
 						<small><a> 28/01/2022 </a></small>	
 					</p>
 					<p>
-						<small><a>Univeristé Paris Saclay SETI M2 </a></small>
+						<small><a>Université Paris Saclay SETI M2 </a></small>
 					</p>
 				</section>
 
 				<section data-markdown>
-					## Abstract
-					----
-					+ Simplification de programmation de SIMD
-					+ Extension de C++ (lib Boost::SIMD)
-					+ Implémentation dans des projets 
-				</section>
-
-				<section data-markdown>
-					## Just les bases
+					## Bases
 					----
 					1. Architecture de SIMD de CPU Extension
 						- Intel: SSE, SSE2, AVX
@@ -62,9 +54,17 @@
 					3. DSL(Domain Specific Language) et AST-Tree 
 				</section>
 
+				<section data-markdown>
+					## Introduction
+					----
+					+ Simplification de programmation de SIMD
+					+ Extension de C++ (lib Boost::SIMD)
+					+ Implémentation dans des projets 
+				</section>
+
 				<section>
 					<p data-markdown>
-						## Catalogue
+						## Plan
 						----
 						1. La motivation
 						2. L'extension de C++
@@ -76,7 +76,7 @@
 
 				<section>
 					<section>
-						<h2>Pour quoi il veut faire cet extension et implémentation de C++ ?</h2>
+						<h2>La motivation de cet extension et implémentation de C++ ?</h2>
 						<a href="#" class="navigate-down">
 							<img class="r-frame" style="background: rgba(255,255,255,0.1);" width="178" height="238" data-src="https://static.slid.es/reveal/arrow.png" alt="Down arrow">
 						</a>
@@ -113,12 +113,6 @@
 
 					</section>
 
-					<section>
-						<p data-markdown>
-							<!-- 放置文章的结构图 -->
-							C'est Parti! 
-						</p>
-					</section>
 				</section>
 
 
@@ -242,7 +236,7 @@
 						</p>
 						<span style="display: inline-block;" class="fragment fade-up">
 							<p data-markdown>
-								### C'est quoi le Proto
+								### Le Boost::Proto
 							</p>
 						</span>
 						<span style="display: inline-block;" class="fragment fade-up">
@@ -317,6 +311,10 @@
 							SVE1024, SVE2048, VMX, VSX, CUDA, ROCM.
 
 						</script></code></pre>
+
+						<p data-markdown>
+							Il faut supprimer ce page
+						</p>
 					</section>
 
 				</section>
@@ -330,7 +328,7 @@
 							+ Sigma Delta Motion Détection
 							+ RGB2YUV Couleur Transformation
 							----
-							Evaluer les performance en **GFlop/s** ou CPP
+							Evaluer les performances en **GFlop/s** ou CPP
 						</p>
 					</section>
 
@@ -344,7 +342,7 @@
 						
 						
 							+ Sigma Delta Motion Détection
-								+ CPP: Vitesse x 8 
+								+ CPP: Vitesse x 8 Le nombre précis
 								+ Un calcule plus général
 
 							+ RGB2YUV Couleur Détection
@@ -358,7 +356,7 @@
 					<h2>Conclusion</h2>
 					<p data-markdown>
 						----
-						+ Bon:
+						+ Avantage:
 							+ Simplifier la programmation SIMD
 							+ Accélérer les applications générales
 							+ Support de DSL domaine spécifique
